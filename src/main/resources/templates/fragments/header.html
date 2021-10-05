@@ -1,0 +1,7 @@
+<html>
+    <body>
+        <header th:fragment="header (style, left, right)" id="header" th:class="alt + ' ' + ${style}">
+            <a href="/" class="logo"><strong th:text="${left}">Left</strong> <span th:text="${right}">Right</span></a>
+        </header>
+    </body>
+</html>
