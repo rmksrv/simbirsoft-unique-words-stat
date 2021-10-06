@@ -1,7 +1,7 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
 import java.io.IOException;
-import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +16,23 @@ public class MainController {
 
   @GetMapping
   public String index(Model model) throws IOException {
+    model.addAttribute("urlstring", "Введите адрес сайта");
     return "index";
   }
 
   @PostMapping
-  public String indexViewStats(@RequestParam("urlstring") String URLString, Model model)
+  public String stats(
+          @RequestParam("urlstring") String URLString,
+          @RequestParam(
+                  value = "case-sensitive",
+                  defaultValue = "false"
+          ) boolean caseSensitive,
+          Model model)
       throws IOException {
-    Map<String, Long> wordsFrequency = apiController.wordsFrequency(URLString);
-    model.addAttribute("wordsFrequency", wordsFrequency);
-    return "index";
+    model.addAttribute("urlstring", URLString);
+    model.addAttribute(
+        "wordsFrequency",
+        apiController.wordsFrequency(URLString, caseSensitive));
+    return "stats";
   }
 }

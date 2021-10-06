@@ -1,12 +1,14 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
-import io.github.rmksrv.simbirsoftuniquewordsstat.utils.StringUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
@@ -16,18 +18,17 @@ public class ApiController {
       value = "/words-frequency",
       consumes = "application/json",
       produces = "application/json")
-  public Map<String, Long> wordsFrequency(@RequestParam("urlstring") String URLString)
+  public Map<String, Long> wordsFrequency(@RequestParam("urlstring") String URLString, boolean caseSensitive)
       throws IOException {
-    List<Character> delimiters =
-        List.of(' ', ',', '.', '!', '?', '\n', '\t', '\r'); // TODO: вынести в параметры
     Document doc = Jsoup.connect(URLString).get();
-    String content = doc.text();
-    List<String> words = StringUtils.splitMultipleDelimiters(content, delimiters);
-    var foo = words.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
-    return foo.entrySet().stream()
-        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-        .collect(
-            Collectors.toMap(
-                Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    List<String> words = Arrays.asList(doc.text().split("\\P{L}+"));
+    if (!caseSensitive) {
+      words = words.stream().map(String::toLowerCase).collect(Collectors.toList());
+    }
+    return words.stream()
+            .collect(Collectors.groupingBy(e -> e, Collectors.counting()))
+            .entrySet().stream()
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
   }
 }

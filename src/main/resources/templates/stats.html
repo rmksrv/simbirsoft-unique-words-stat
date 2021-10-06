@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/meta.html :: meta">
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header th:replace="fragments/header.html :: header (style='', left='Unique', right='words stat')"></header>
+
+    <!-- Main -->
+
+    <div id="main" class="alt">
+        <div class="inner">
+            <h2 th:text='${urlstring}'>Site</h2>
+
+            <div class="table-wrapper">
+                <table class="alt">
+
+                    <thead>
+                        <tr>
+                            <th>Слово</th>
+                            <th>Количество</th>
+                        </tr>
+                    </thead>
+
+                    <tbody th:each="kv : ${wordsFrequency}">
+                        <tr>
+                            <td th:text='|"${kv.getKey()}"|'>Слово</td>
+                            <td th:text="${kv.getValue()}">Количество вхождений</td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+<!--                            <td colspan="1"></td>-->
+                            <td>Всего слов</td>
+<!--                            <td>100.00</td>-->
+                            <td th:text="${wordsFrequency.size()}"></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <header th:replace="fragments/footer.html :: footer"></header>
+
+</div>
+
+<!-- Scripts -->
+<div th:replace="fragments/scripts.html :: scripts"></div>
+
+</body>
+</html>

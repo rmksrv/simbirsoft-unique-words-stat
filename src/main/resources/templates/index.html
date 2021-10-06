@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/meta.html :: meta">
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header th:replace="fragments/header.html :: header (style='', left='Unique', right='words stat')"></header>
+
+    <!-- Main -->
+
+    <div id="main" class="alt">
+        <div class="inner">
+            <h3>Статистика веб-страницы</h3>
+
+            <form method="post" th:action="@{/} ">
+                <div class="row gtr-uniform">
+                    <div class="col-12 col-12-xsmall">
+                        <input type="text" name="urlstring" id="urlstring" value="" th:placeholder="${urlstring}" />
+                    </div>
+                    <div class="col-6 col-12-small">
+                        <input type="checkbox" id="case-sensitive" name="case-sensitive">
+                        <label for="case-sensitive">Учитывать регистр</label>
+                    </div>
+                    <div class="col-12">
+                        <ul class="actions">
+                            <li><input align="center" type="submit" value="Обработать" class="primary" /></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <header th:replace="fragments/footer.html :: footer"></header>
+
+</div>
+
+<!-- Scripts -->
+<div th:replace="fragments/scripts.html :: scripts"></div>
+
+</body>
+</html>
