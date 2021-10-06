@@ -19,7 +19,7 @@ public class ApiController {
       consumes = "application/json",
       produces = "application/json")
   public Map<String, Long> wordsFrequency(
-      @RequestParam("urlstring") String URLString, boolean caseSensitive) throws IOException {
+      @RequestParam("url-string") String URLString, boolean caseSensitive) throws IOException {
     Document doc = Jsoup.connect(URLString).get();
     List<String> words = Arrays.asList(doc.text().split("\\P{L}+"));
     if (!caseSensitive) {

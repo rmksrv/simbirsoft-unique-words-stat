@@ -19,7 +19,7 @@
 
     <div id="main" class="alt">
         <div class="inner">
-            <h2 th:text='${urlstring}'>Site</h2>
+            <h3 th:text='${url_string}'>Site</h3>
 
             <div class="table-wrapper">
                 <table class="alt">
@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
 
-                    <tbody th:each="kv : ${wordsFrequency}">
+                    <tbody th:each="kv : ${words_frequency}">
                         <tr>
                             <td th:text='|"${kv.getKey()}"|'>Слово</td>
                             <td th:text="${kv.getValue()}">Количество вхождений</td>
@@ -43,7 +43,7 @@
 <!--                            <td colspan="1"></td>-->
                             <td>Всего слов</td>
 <!--                            <td>100.00</td>-->
-                            <td th:text="${wordsFrequency.size()}"></td>
+                            <td th:text="${words_frequency.size()}"></td>
                         </tr>
                     </tfoot>
 

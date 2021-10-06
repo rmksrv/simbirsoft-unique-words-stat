@@ -20,21 +20,28 @@
     <div id="main" class="alt">
         <div class="inner">
             <h3>Статистика веб-страницы</h3>
-
+            <div class="box" th:if="${error_msg}">
+                <b>Ошибка!</b>
+                <p th:text="${error_msg}"></p>
+            </div>
             <form method="post" th:action="@{/} ">
                 <div class="row gtr-uniform">
+
                     <div class="col-12 col-12-xsmall">
-                        <input type="text" name="urlstring" id="urlstring" value="" th:placeholder="${urlstring}" />
+                        <input type="text" name="url_string" id="url_string" value="" th:placeholder="${url_string}" />
                     </div>
+
                     <div class="col-6 col-12-small">
-                        <input type="checkbox" id="case-sensitive" name="case-sensitive">
-                        <label for="case-sensitive">Учитывать регистр</label>
+                        <input type="checkbox" id="case_sensitive" name="case_sensitive">
+                        <label for="case_sensitive">Учитывать регистр</label>
                     </div>
+
                     <div class="col-12">
                         <ul class="actions">
                             <li><input align="center" type="submit" value="Обработать" class="primary" /></li>
                         </ul>
                     </div>
+
                 </div>
             </form>
         </div>
