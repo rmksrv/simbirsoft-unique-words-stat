@@ -1,7 +1,6 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
 import java.io.IOException;
-
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,5 +40,4 @@ public class MainController {
   public String error() {
     return "error";
   }
-
 }
