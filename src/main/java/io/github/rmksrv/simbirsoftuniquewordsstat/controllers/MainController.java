@@ -1,7 +1,6 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,17 +21,12 @@ public class MainController {
 
   @PostMapping
   public String stats(
-          @RequestParam("urlstring") String URLString,
-          @RequestParam(
-                  value = "case-sensitive",
-                  defaultValue = "false"
-          ) boolean caseSensitive,
-          Model model)
+      @RequestParam("urlstring") String URLString,
+      @RequestParam(value = "case-sensitive", defaultValue = "false") boolean caseSensitive,
+      Model model)
       throws IOException {
     model.addAttribute("urlstring", URLString);
-    model.addAttribute(
-        "wordsFrequency",
-        apiController.wordsFrequency(URLString, caseSensitive));
+    model.addAttribute("wordsFrequency", apiController.wordsFrequency(URLString, caseSensitive));
     return "stats";
   }
 }
