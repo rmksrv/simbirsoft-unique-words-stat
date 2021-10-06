@@ -9,5 +9,4 @@ public class SimbirsoftUniqueWordsStatApplication {
   public static void main(String[] args) {
     SpringApplication.run(SimbirsoftUniqueWordsStatApplication.class, args);
   }
-
 }
