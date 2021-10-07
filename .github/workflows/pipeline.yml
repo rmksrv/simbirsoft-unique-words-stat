@@ -22,7 +22,45 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-      - name: Build with Gradle
-        run: ./gradlew build
+
+      - name: Grant Permissions to gradlew
+        run: chmod +x gradlew
+
+      - name: Grant Permissions to gradlew
+        run: chmod +x gradlew
+
+      - name: Test
+        run: ./gradlew test --tests "*"
+
+      - name: Test Success
+        if: success()
+        uses: actions/github-script@0.2.0
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const pull_number = "${{github.event.number}}"
+            await github.pulls.createReview({
+              ...context.repo,
+              pull_number,
+              body: "All tests passed.",
+             event: "APPROVE"
+            })
+
+      - name: Test Fail
+        if: failure()
+        uses: actions/github-script@0.2.0
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const pull_number = "${{github.event.number}}"
+            await github.pulls.createReview({
+              ...context.repo,
+              pull_number,
+              body: "There is something wrong with test codes.",
+             event: "REQUEST_CHANGES"
+            })
+            await github.pulls.update({
+              ...context.repo,
+              pull_number,
+              state: "closed"
+            })
