@@ -20,6 +20,8 @@
     <div id="main" class="alt">
         <div class="inner">
             <h3>Что-то пошло не так =(</h3>
+            <h4 th:text='${error.get("code")}'></h4>
+            <p th:text='${error.get("message")}'></p>
         </div>
     </div>
 
