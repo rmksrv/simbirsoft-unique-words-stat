@@ -46,10 +46,11 @@ public class ApiController {
       }
       apiResponse.setData(wordsFrequency(words));
     } catch (Exception e) {
-      String message = MessageFormat.format("[{0}] - {1}",
+      String message =
+          MessageFormat.format(
+              "[{0}] - {1}",
               new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()),
-              Arrays.toString(e.getStackTrace())
-      );
+              Arrays.toString(e.getStackTrace()));
       LOGGER.error(message);
       apiResponse.setErrorCode(400);
       apiResponse.setErrorMessage(e.getMessage());

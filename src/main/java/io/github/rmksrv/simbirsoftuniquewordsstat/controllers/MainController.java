@@ -1,6 +1,5 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
-
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
