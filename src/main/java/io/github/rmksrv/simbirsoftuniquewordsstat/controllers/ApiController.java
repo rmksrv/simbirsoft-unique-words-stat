@@ -1,11 +1,9 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
+import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.web.bind.annotation.PostMapping;

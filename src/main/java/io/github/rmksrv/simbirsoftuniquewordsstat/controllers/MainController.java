@@ -1,6 +1,5 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
-import java.util.Map;
 
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,8 @@ public class MainController {
       @RequestParam(value = "case_sensitive", defaultValue = "false") boolean caseSensitive,
       Model model) {
     model.addAttribute("url_string", URLString);
-    ApiResponse wordsFrequencyResponse = apiController.wordsFrequencyHandler(URLString, caseSensitive);
+    ApiResponse wordsFrequencyResponse =
+        apiController.wordsFrequencyHandler(URLString, caseSensitive);
     if (wordsFrequencyResponse.getData() != null) {
       model.addAttribute("words_frequency", wordsFrequencyResponse.getData());
       return "stats";
