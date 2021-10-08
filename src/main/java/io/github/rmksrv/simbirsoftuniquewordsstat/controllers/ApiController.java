@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,42 +32,37 @@ public class ApiController {
       value = "/words-frequency",
       consumes = "application/json",
       produces = "application/json")
-  public Map<String, Map<String, Object>> wordsFrequencyHandler(
-      String urlString, boolean caseSensitive) {
-    Map<String, Map<String, Object>> resp = new HashMap<>();
+  public ApiResponse wordsFrequencyHandler(String urlString, boolean caseSensitive) {
+    ApiResponse apiResponse = new ApiResponse();
     try {
       Document doc = Jsoup.connect(urlString).get();
       List<String> words = Arrays.asList(doc.text().split("\\P{L}+"));
       if (!caseSensitive) {
         words = words.stream().map(String::toLowerCase).collect(Collectors.toList());
       }
-      resp.put("data", wordsFrequency(words));
-    } catch (MalformedURLException | IllegalArgumentException e) {
-      e.printStackTrace();
-      resp.put(
-          "error",
-          Map.of("message", String.format("Введен некорректный URL: %s", urlString), "code", 400));
+      apiResponse.setData(wordsFrequency(words));
     } catch (Exception e) {
       e.printStackTrace();
-      resp.put("error", Map.of("message", e.getMessage(), "code", 400));
+      apiResponse.setErrorCode(400);
+      apiResponse.setErrorMessage(e.getMessage());
     }
-    return resp;
+    return apiResponse;
   }
 
-  public Map<String, Map<String, Object>> wordsFrequencyHandler(
-      File localPage, boolean caseSensitive) {
-    Map<String, Map<String, Object>> resp = new HashMap<>();
+  public ApiResponse wordsFrequencyHandler(File localPage, boolean caseSensitive) {
+    ApiResponse apiResponse = new ApiResponse();
     try {
       Document doc = Jsoup.parse(localPage, null);
       List<String> words = Arrays.asList(doc.text().split("\\P{L}+"));
       if (!caseSensitive) {
         words = words.stream().map(String::toLowerCase).collect(Collectors.toList());
       }
-      resp.put("data", wordsFrequency(words));
+      apiResponse.setData(wordsFrequency(words));
     } catch (Exception e) {
       e.printStackTrace();
-      resp.put("error", Map.of("message", e.getMessage(), "code", 400));
+      apiResponse.setErrorCode(400);
+      apiResponse.setErrorMessage(e.getMessage());
     }
-    return resp;
+    return apiResponse;
   }
 }

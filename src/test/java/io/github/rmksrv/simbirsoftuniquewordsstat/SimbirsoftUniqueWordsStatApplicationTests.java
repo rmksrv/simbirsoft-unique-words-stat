@@ -23,44 +23,40 @@ class SimbirsoftUniqueWordsStatApplicationTests {
 
   @Test
   void testSmoke() {
-    Map<String, Map<String, Object>> response =
-        apiController.wordsFrequencyHandler(ONLY_SPACES_PAGE, false);
-    assertNull(response.get("error"));
-    assertEquals(response.get("data").get("раз"), 1L);
-    assertEquals(response.get("data").get("два"), 2L);
-    assertEquals(response.get("data").get("три"), 3L);
+    ApiResponse response = apiController.wordsFrequencyHandler(ONLY_SPACES_PAGE, false);
+    assertNull(response.getErrorCode());
+    assertNull(response.getErrorMessage());
+    assertEquals(response.getData().get("раз"), 1L);
+    assertEquals(response.getData().get("два"), 2L);
+    assertEquals(response.getData().get("три"), 3L);
   }
 
   @Test
   void testSmokeCaseSensitive() {
-    Map<String, Map<String, Object>> response =
-        apiController.wordsFrequencyHandler(ONLY_SPACES_PAGE, true);
-    assertNull(response.get("error"));
-    assertEquals(response.get("data").get("Раз"), 1L);
-    assertEquals(response.get("data").get("два"), 1L);
-    assertEquals(response.get("data").get("Два"), 1L);
-    assertEquals(response.get("data").get("три"), 3L);
+    ApiResponse response = apiController.wordsFrequencyHandler(ONLY_SPACES_PAGE, true);
+    assertNull(response.getErrorCode());
+    assertNull(response.getErrorMessage());
+    assertEquals(response.getData().get("Раз"), 1L);
+    assertEquals(response.getData().get("два"), 1L);
+    assertEquals(response.getData().get("Два"), 1L);
+    assertEquals(response.getData().get("три"), 3L);
   }
 
   @Test
   void testDifferentDelimiters() {
-    Map<String, Map<String, Object>> response =
-        apiController.wordsFrequencyHandler(SAMPLE_PAGE, false);
-    assertNull(response.get("error"));
-    assertEquals(response.get("data").size(), 79);
-    assertEquals(response.get("data").get("пол"), 3L);
-    assertEquals(response.get("data").get("она"), 4L);
+    ApiResponse response = apiController.wordsFrequencyHandler(SAMPLE_PAGE, false);
+    assertNull(response.getErrorCode());
+    assertNull(response.getErrorMessage());
+    assertEquals(response.getData().size(), 79);
+    assertEquals(response.getData().get("пол"), 3L);
+    assertEquals(response.getData().get("она"), 4L);
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"asdf", "htps://asadfsdf"})
   void testInvalidUrl(String urlString) {
-    Map<String, Map<String, Object>> response =
-        apiController.wordsFrequencyHandler(urlString, false);
-    assertNull(response.get("data"));
-    assertEquals(response.get("error").get("code"), 400);
-    assertEquals(
-        response.get("error").get("message"),
-        String.format("Введен некорректный URL: %s", urlString));
+    ApiResponse response = apiController.wordsFrequencyHandler(urlString, false);
+    assertNull(response.getData());
+    assertEquals(response.getErrorCode(), 400);
   }
 }
