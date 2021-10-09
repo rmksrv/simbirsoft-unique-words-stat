@@ -6,10 +6,14 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.github.rmksrv.simbirsoftuniquewordsstat.models.WordsFrequencyStamp;
+import io.github.rmksrv.simbirsoftuniquewordsstat.repos.WordsFrequencyStampRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
+  private final WordsFrequencyStampRepository wordsFrequencyStampRepository;
+
+  @Autowired
+  public ApiController(WordsFrequencyStampRepository wordsFrequencyStampRepository) {
+    this.wordsFrequencyStampRepository = wordsFrequencyStampRepository;
+  }
 
   private Map<String, Object> wordsFrequency(List<String> words) {
     return words.stream()
@@ -44,14 +54,20 @@ public class ApiController {
       if (!caseSensitive) {
         words = words.stream().map(String::toLowerCase).collect(Collectors.toList());
       }
-      apiResponse.setData(wordsFrequency(words));
+
+      Map<String, Object> wordsFrequency = wordsFrequency(words);
+      apiResponse.setData(wordsFrequency);
+      // TODO: запись в бд съедает много времени => хочется делать это после отдачи ответа (асинхронно?)
+      for (Map.Entry<String, Object> wordFreq : wordsFrequency.entrySet()) {
+        WordsFrequencyStamp stamp = new WordsFrequencyStamp();
+        stamp.setUrl(urlString);
+        stamp.setWord(wordFreq.getKey());
+        stamp.setFrequency((Long) wordFreq.getValue());
+        wordsFrequencyStampRepository.save(stamp);
+      }
+
     } catch (Exception e) {
-      String message =
-          MessageFormat.format(
-              "[{0}] - {1}",
-              new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()),
-              Arrays.toString(e.getStackTrace()));
-      LOGGER.error(message);
+      LOGGER.error(Arrays.toString(e.getStackTrace()));
       apiResponse.setErrorCode(400);
       apiResponse.setErrorMessage(e.getMessage());
     }
@@ -59,7 +75,7 @@ public class ApiController {
   }
 
   /**
-   * пилилась для тестов, но в общем-то можно добавить возможность подгрузки своей страницы юзером
+   * пилилась в общем-то только для тестов
    */
   public ApiResponse wordsFrequencyHandler(File localPage, boolean caseSensitive) {
     ApiResponse apiResponse = new ApiResponse();
