@@ -31,8 +31,8 @@
                         </tr>
                     </thead>
 
-                    <tbody th:each="kv : ${words_frequency}">
-                        <tr>
+                    <tbody>
+                        <tr th:each="kv : ${words_frequency}">
                             <td th:text='|"${kv.getKey()}"|'>Слово</td>
                             <td th:text="${kv.getValue()}">Количество вхождений</td>
                         </tr>
@@ -40,9 +40,7 @@
 
                     <tfoot>
                         <tr>
-<!--                            <td colspan="1"></td>-->
                             <td>Всего слов</td>
-<!--                            <td>100.00</td>-->
                             <td th:text="${words_frequency.size()}"></td>
                         </tr>
                     </tfoot>

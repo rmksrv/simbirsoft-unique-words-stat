@@ -8,14 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
 @Controller
 public class MainController {
 
   @Autowired private ApiController apiController;
 
+  private static final int LAST_ASKED_URLS_AMOUNT = 20;
+  private Queue<String> lastAskedUrls = new ArrayBlockingQueue<>(LAST_ASKED_URLS_AMOUNT);
+
   @GetMapping
   public String index(Model model) {
     model.addAttribute("url_string", "Введите адрес сайта");
+    model.addAttribute("last_asked_urls", lastAskedUrls);
     return "index";
   }
 
@@ -28,6 +35,7 @@ public class MainController {
     ApiResponse wordsFrequencyResponse =
         apiController.wordsFrequencyHandler(URLString, caseSensitive);
     if (wordsFrequencyResponse.getData() != null) {
+      lastAskedUrls.add(URLString);
       model.addAttribute("words_frequency", wordsFrequencyResponse.getData());
       return "stats";
     } else {

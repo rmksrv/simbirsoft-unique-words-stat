@@ -34,12 +34,46 @@
 
                     <div class="col-12">
                         <ul class="actions">
-                            <li><input align="center" type="submit" value="Обработать" class="primary" /></li>
+                            <li><input type="submit" value="Обработать" class="primary" /></li>
                         </ul>
                     </div>
 
                 </div>
             </form>
+            <hr>
+
+<!--            <h3 th:if="${!last_asked_urls.isEmpty()}" >Последние запрошенные страницы</h3>-->
+<!--            <div th:each="url : ${last_asked_urls}">-->
+<!--                <form method="post" th:action="@{/} ">-->
+<!--                    <input type="hidden" name="url_string" th:value="${url}">-->
+<!--                    <input type="hidden" name="case_sensitive" value="false">-->
+<!--&lt;!&ndash;                    <button type="submit" class="link-button" th:text="${url}"></button>&ndash;&gt;-->
+<!--                    <a class="button small actions" onclick="this.parentNode.submit()" th:text="${url}"></a>-->
+<!--                </form>-->
+<!--            </div>-->
+
+
+            <div class="table-wrapper" th:if="${!last_asked_urls.isEmpty()}">
+                <table class="alt">
+
+                    <thead>
+                    <tr>
+                        <th>Последние запрошенные страницы</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="url : ${last_asked_urls}">
+                        <td>
+                            <a th:text="${url}">url</a>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+
         </div>
     </div>
 
