@@ -24,7 +24,7 @@
                 <div class="row gtr-uniform">
 
                     <div class="col-12 col-12-xsmall">
-                        <input type="text" name="url_string" id="url_string" value="" th:placeholder="${url_string}" />
+                        <input type="text" name="url" id="url" value="" placeholder="Введите адрес сайта" />
                     </div>
 
                     <div class="col-6 col-12-small">
@@ -40,20 +40,9 @@
 
                 </div>
             </form>
-            <hr>
 
-<!--            <h3 th:if="${!last_asked_urls.isEmpty()}" >Последние запрошенные страницы</h3>-->
-<!--            <div th:each="url : ${last_asked_urls}">-->
-<!--                <form method="post" th:action="@{/} ">-->
-<!--                    <input type="hidden" name="url_string" th:value="${url}">-->
-<!--                    <input type="hidden" name="case_sensitive" value="false">-->
-<!--&lt;!&ndash;                    <button type="submit" class="link-button" th:text="${url}"></button>&ndash;&gt;-->
-<!--                    <a class="button small actions" onclick="this.parentNode.submit()" th:text="${url}"></a>-->
-<!--                </form>-->
-<!--            </div>-->
-
-
-            <div class="table-wrapper" th:if="${!last_asked_urls.isEmpty()}">
+            <div class="table-wrapper" th:if="${!last_requests.isEmpty()}">
+                <hr>
                 <table class="alt">
 
                     <thead>
@@ -63,9 +52,12 @@
                     </thead>
 
                     <tbody>
-                    <tr th:each="url : ${last_asked_urls}">
+                    <tr th:each="r: ${last_requests}">
                         <td>
-                            <a th:text="${url}">url</a>
+                            <form method="post" th:action="@{/stamp}" onclick="this.submit()">
+                                <input name="request_id" type="hidden" th:value="${r.getId()}">
+                                <p th:text="${r.getUrl()}"></p>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

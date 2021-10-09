@@ -1,8 +1,7 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
+import io.github.rmksrv.simbirsoftuniquewordsstat.models.ApiRequest;
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,26 +14,22 @@ public class MainController {
 
   @Autowired private ApiController apiController;
 
-  private static final int LAST_ASKED_URLS_AMOUNT = 20;
-  private Queue<String> lastAskedUrls = new ArrayBlockingQueue<>(LAST_ASKED_URLS_AMOUNT);
-
   @GetMapping
   public String index(Model model) {
     model.addAttribute("url_string", "Введите адрес сайта");
-    model.addAttribute("last_asked_urls", lastAskedUrls);
+    model.addAttribute("last_requests", apiController.getLastRequestsHandler());
     return "index";
   }
 
   @PostMapping
   public String stats(
-      @RequestParam("url_string") String URLString,
+      @RequestParam("url") String url,
       @RequestParam(value = "case_sensitive", defaultValue = "false") boolean caseSensitive,
       Model model) {
-    model.addAttribute("url_string", URLString);
+    model.addAttribute("url", url);
     ApiResponse wordsFrequencyResponse =
-        apiController.wordsFrequencyHandler(URLString, caseSensitive);
+        apiController.wordsFrequencyHandler(url, caseSensitive);
     if (wordsFrequencyResponse.getData() != null) {
-      lastAskedUrls.add(URLString);
       model.addAttribute("words_frequency", wordsFrequencyResponse.getData());
       return "stats";
     } else {
@@ -42,5 +37,12 @@ public class MainController {
       model.addAttribute("error_message", wordsFrequencyResponse.getErrorMessage());
       return "error";
     }
+  }
+
+  @PostMapping("stamp")
+  public String statsDbStamps(@RequestParam("request_id") ApiRequest apiRequest, Model model) {
+    model.addAttribute("url", apiRequest.getUrl());
+    model.addAttribute("words_frequency", apiController.wordsFrequencyStampHandler(apiRequest).getData());
+    return "stats";
   }
 }

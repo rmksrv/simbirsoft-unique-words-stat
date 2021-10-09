@@ -5,17 +5,18 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
 @Data
-public class WordsFrequencyStamp {
+public class ApiRequest {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  @ManyToOne
-  private ApiRequest apiRequest;
-
-  private String word;
-  private Long frequency;
+  @CreationTimestamp private Timestamp timestamp;
+  private String url;
+  @OneToMany(mappedBy = "apiRequest", cascade = CascadeType.ALL)
+  private Set<WordsFrequencyStamp> stamps = new HashSet<>();
 }
