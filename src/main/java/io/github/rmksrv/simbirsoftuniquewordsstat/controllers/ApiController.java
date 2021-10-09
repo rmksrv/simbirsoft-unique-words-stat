@@ -29,7 +29,7 @@ public class ApiController {
   private final WordsFrequencyStampRepository wordsFrequencyStampRepository;
   private final ApiRequestRepository apiRequestRepository;
 
-  private static final int LAST_REQUESTS_AMOUNT = 20;
+  private static final int LAST_REQUESTS_AMOUNT = 5;
 
   @Autowired
   public ApiController(WordsFrequencyStampRepository wordsFrequencyStampRepository, ApiRequestRepository apiRequestRepository) {
@@ -117,7 +117,16 @@ public class ApiController {
           consumes = "application/json",
           produces = "application/json")
   public ApiResponse wordsFrequencyStampHandler(ApiRequest apiRequest) {
-
-    return new ApiResponse();
+    ApiResponse response = new ApiResponse();
+    Map<String, Object> foo = apiRequest.getStamps()
+            .stream()
+            .collect(Collectors.toMap(
+                    WordsFrequencyStamp::getWord,
+                    WordsFrequencyStamp::getFrequency,
+                    (e1, e2) -> e1,
+                    LinkedHashMap::new
+            ));
+    response.setData(foo);
+    return response;
   }
 }

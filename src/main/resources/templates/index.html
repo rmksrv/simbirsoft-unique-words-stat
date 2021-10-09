@@ -54,10 +54,7 @@
                     <tbody>
                     <tr th:each="r: ${last_requests}">
                         <td>
-                            <form method="post" th:action="@{/stamp}" onclick="this.submit()">
-                                <input name="request_id" type="hidden" th:value="${r.getId()}">
-                                <p th:text="${r.getUrl()}"></p>
-                            </form>
+                            <a th:href="${r.getId()}" th:text="${r.getUrl()}"></a>
                         </td>
                     </tr>
                     </tbody>

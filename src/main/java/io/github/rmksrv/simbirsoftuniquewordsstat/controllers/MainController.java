@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,8 +40,8 @@ public class MainController {
     }
   }
 
-  @PostMapping("stamp")
-  public String statsDbStamps(@RequestParam("request_id") ApiRequest apiRequest, Model model) {
+  @GetMapping("{request_id}")
+  public String statsDbStamps(@PathVariable("request_id") ApiRequest apiRequest, Model model) {
     model.addAttribute("url", apiRequest.getUrl());
     model.addAttribute("words_frequency", apiController.wordsFrequencyStampHandler(apiRequest).getData());
     return "stats";
