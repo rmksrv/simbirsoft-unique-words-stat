@@ -1,14 +1,11 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
-import java.io.File;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import io.github.rmksrv.simbirsoftuniquewordsstat.models.WordsFrequencyStamp;
 import io.github.rmksrv.simbirsoftuniquewordsstat.repos.WordsFrequencyStampRepository;
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -57,7 +54,8 @@ public class ApiController {
 
       Map<String, Object> wordsFrequency = wordsFrequency(words);
       apiResponse.setData(wordsFrequency);
-      // TODO: запись в бд съедает много времени => хочется делать это после отдачи ответа (асинхронно?)
+      // TODO: запись в бд съедает много времени => хочется делать это после отдачи ответа
+      // (асинхронно?)
       for (Map.Entry<String, Object> wordFreq : wordsFrequency.entrySet()) {
         WordsFrequencyStamp stamp = new WordsFrequencyStamp();
         stamp.setUrl(urlString);
@@ -74,9 +72,7 @@ public class ApiController {
     return apiResponse;
   }
 
-  /**
-   * пилилась в общем-то только для тестов
-   */
+  /** пилилась в общем-то только для тестов */
   public ApiResponse wordsFrequencyHandler(File localPage, boolean caseSensitive) {
     ApiResponse apiResponse = new ApiResponse();
     try {
