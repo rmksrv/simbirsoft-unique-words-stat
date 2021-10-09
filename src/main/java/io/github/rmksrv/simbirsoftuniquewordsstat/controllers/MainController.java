@@ -1,15 +1,14 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 @Controller
 public class MainController {
