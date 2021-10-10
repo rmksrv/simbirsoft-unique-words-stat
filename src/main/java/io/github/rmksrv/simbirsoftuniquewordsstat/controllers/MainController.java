@@ -1,7 +1,7 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
-import io.github.rmksrv.simbirsoftuniquewordsstat.models.ApiRequest;
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
+import io.github.rmksrv.simbirsoftuniquewordsstat.models.ApiRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +28,7 @@ public class MainController {
       @RequestParam(value = "case_sensitive", defaultValue = "false") boolean caseSensitive,
       Model model) {
     model.addAttribute("url", url);
-    ApiResponse wordsFrequencyResponse =
-        apiController.wordsFrequencyHandler(url, caseSensitive);
+    ApiResponse wordsFrequencyResponse = apiController.wordsFrequencyHandler(url, caseSensitive);
     if (wordsFrequencyResponse.getData() != null) {
       model.addAttribute("words_frequency", wordsFrequencyResponse.getData());
       return "stats";
@@ -43,7 +42,8 @@ public class MainController {
   @GetMapping("{request_id}")
   public String statsDbStamps(@PathVariable("request_id") ApiRequest apiRequest, Model model) {
     model.addAttribute("url", apiRequest.getUrl());
-    model.addAttribute("words_frequency", apiController.wordsFrequencyStampHandler(apiRequest).getData());
+    model.addAttribute(
+        "words_frequency", apiController.wordsFrequencyStampHandler(apiRequest).getData());
     return "stats";
   }
 }

@@ -1,7 +1,7 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.controllers;
 
-import io.github.rmksrv.simbirsoftuniquewordsstat.models.ApiRequest;
 import io.github.rmksrv.simbirsoftuniquewordsstat.ApiResponse;
+import io.github.rmksrv.simbirsoftuniquewordsstat.models.ApiRequest;
 import io.github.rmksrv.simbirsoftuniquewordsstat.models.WordsFrequencyStamp;
 import io.github.rmksrv.simbirsoftuniquewordsstat.repos.ApiRequestRepository;
 import io.github.rmksrv.simbirsoftuniquewordsstat.repos.WordsFrequencyStampRepository;
@@ -32,7 +32,9 @@ public class ApiController {
   private static final int LAST_REQUESTS_AMOUNT = 5;
 
   @Autowired
-  public ApiController(WordsFrequencyStampRepository wordsFrequencyStampRepository, ApiRequestRepository apiRequestRepository) {
+  public ApiController(
+      WordsFrequencyStampRepository wordsFrequencyStampRepository,
+      ApiRequestRepository apiRequestRepository) {
     this.wordsFrequencyStampRepository = wordsFrequencyStampRepository;
     this.apiRequestRepository = apiRequestRepository;
   }
@@ -103,29 +105,27 @@ public class ApiController {
     return apiResponse;
   }
 
-  @GetMapping(
-          value = "get-last-requests",
-          produces = "application/json")
+  @GetMapping(value = "get-last-requests", produces = "application/json")
   public List<ApiRequest> getLastRequestsHandler() {
-    return apiRequestRepository.findAll(
-            PageRequest.of(0, LAST_REQUESTS_AMOUNT, Sort.by(Sort.Direction.DESC, "timestamp"))
-    ).getContent();
+    return apiRequestRepository
+        .findAll(PageRequest.of(0, LAST_REQUESTS_AMOUNT, Sort.by(Sort.Direction.DESC, "timestamp")))
+        .getContent();
   }
 
   @PostMapping(
-          value = "word-frequency-stamp",
-          consumes = "application/json",
-          produces = "application/json")
+      value = "word-frequency-stamp",
+      consumes = "application/json",
+      produces = "application/json")
   public ApiResponse wordsFrequencyStampHandler(ApiRequest apiRequest) {
     ApiResponse response = new ApiResponse();
-    Map<String, Object> foo = apiRequest.getStamps()
-            .stream()
-            .collect(Collectors.toMap(
+    Map<String, Object> foo =
+        apiRequest.getStamps().stream()
+            .collect(
+                Collectors.toMap(
                     WordsFrequencyStamp::getWord,
                     WordsFrequencyStamp::getFrequency,
                     (e1, e2) -> e1,
-                    LinkedHashMap::new
-            ));
+                    LinkedHashMap::new));
     response.setData(foo);
     return response;
   }
