@@ -16,6 +16,20 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: rootpass
+          POSTGRES_DB: simbirsoft-unique-words-stat
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
@@ -26,3 +40,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/simbirsoft-unique-words-stat
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: rootpass
