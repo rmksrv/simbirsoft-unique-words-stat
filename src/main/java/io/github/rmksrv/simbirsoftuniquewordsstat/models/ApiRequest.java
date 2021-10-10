@@ -1,14 +1,11 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.models;
 
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import javax.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table
@@ -18,8 +15,7 @@ public class ApiRequest {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @CreationTimestamp
-  private Timestamp timestamp;
+  @CreationTimestamp private Timestamp timestamp;
 
   private String url;
 

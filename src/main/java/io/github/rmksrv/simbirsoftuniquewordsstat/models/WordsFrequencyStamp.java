@@ -1,8 +1,7 @@
 package io.github.rmksrv.simbirsoftuniquewordsstat.models;
 
-import lombok.Data;
-
 import javax.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table
